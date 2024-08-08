@@ -18,14 +18,14 @@ services:
       - my-network
     depends_on:
       - eureka-server
-      
+
   crypto-pair-service:
     image: tymurmustafaiev/crypto-pair-service:latest
     container_name: crypto-pair-service
     networks:
       - my-network
     depends_on:
-      -api-gateway
+      - api-gateway
 
   transaction-service:
     image: tymurmustafaiev/transaction-service:latest
@@ -33,7 +33,7 @@ services:
     networks:
       - my-network
     depends_on:
-      -api-gateway
+      - api-gateway
 
   wallet-service:
     image: tymurmustafaiev/wallet-service:latest
@@ -41,7 +41,7 @@ services:
     networks:
       - my-network
     depends_on:
-      -api-gateway
+      - api-gateway
 
   crypto-price-service:
     image: tymurmustafaiev/crypto-price-service:latest
@@ -49,7 +49,7 @@ services:
     networks:
       - my-network
     depends_on:
-      -api-gateway
+      - api-gateway
 
   draw-chart-service:
     image: tymurmustafaiev/draw-chart-service:latest
@@ -57,7 +57,7 @@ services:
     networks:
       - my-network
     depends_on:
-      -api-gateway
+      - api-gateway
 
   notification-service:
     image: tymurmustafaiev/notification-service:latest
@@ -65,7 +65,7 @@ services:
     networks:
       - my-network
     depends_on:
-      -api-gateway
+      - api-gateway
 
   s3-storage-service:
     image: tymurmustafaiev/s3-storage-service:latest
@@ -73,7 +73,7 @@ services:
     networks:
       - my-network
     depends_on:
-      -api-gateway
+      - api-gateway
 
 networks:
   my-network:
