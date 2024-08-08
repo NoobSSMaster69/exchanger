@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    image: tymurmustafaiev/eureka-server:latest
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - my-network
+
+  api-gateway:
+    image: tymurmustafaiev/api-gateway:latest
+    container_name: api-gateway
+    ports:
+      - "8765:8765"
+    networks:
+      - my-network
+    depends_on:
+      - eureka-server
+
+  crypto-pair-service:
+    image: tymurmustafaiev/crypto-pair-service:latest
+    container_name: crypto-pair-service
+    networks:
+      - my-network
+    depends_on:
+      - eureka-server
+
+  transaction-service:
+    image: tymurmustafaiev/transaction-service:latest
+    container_name: transaction-service
+    networks:
+      - my-network
+    depends_on:
+      - eureka-server
+
+  wallet-service:
+    image: tymurmustafaiev/wallet-service:latest
+    container_name: wallet-service
+    networks:
+      - my-network
+    depends_on:
+      - eureka-server
+
+  crypto-price-service:
+    image: tymurmustafaiev/crypto-price-service:latest
+    container_name: crypto-price-service
+    networks:
+      - my-network
+    depends_on:
+      - eureka-server
+
+  draw-chart-service:
+    image: tymurmustafaiev/draw-chart-service:latest
+    container_name: draw-chart-service
+    networks:
+      - my-network
+    depends_on:
+      - eureka-server
+
+  notification-service:
+    image: tymurmustafaiev/notification-service:latest
+    container_name: notification-service
+    networks:
+      - my-network
+    depends_on:
+      - eureka-server
+
+  s3-storage-service:
+    image: tymurmustafaiev/s3-storage-service:latest
+    container_name: s3-storage-service
+    networks:
+      - my-network
+    depends_on:
+      - eureka-server
+
+networks:
+  my-network:
+    driver: bridge
