@@ -9,11 +9,11 @@ services:
     networks:
       - my-network
     healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "8761"]
+      test: ["CMD", "nc", "-z", "eureka-server", "8761"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 30s
+      start_period: 40s
 
   api-gateway:
     image: tymurmustafaiev/api-gateway:latest
@@ -26,7 +26,7 @@ services:
       eureka-server:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "8765"]
+      test: ["CMD", "nc", "-z", "api-gateway", "8765"]
       interval: 30s
       timeout: 10s
       retries: 3
