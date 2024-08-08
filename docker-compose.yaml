@@ -8,6 +8,12 @@ services:
       - "8761:8761"
     networks:
       - my-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   api-gateway:
     image: tymurmustafaiev/api-gateway:latest
@@ -17,7 +23,14 @@ services:
     networks:
       - my-network
     depends_on:
-      - eureka-server
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8765/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   crypto-pair-service:
     image: tymurmustafaiev/crypto-pair-service:latest
@@ -25,7 +38,8 @@ services:
     networks:
       - my-network
     depends_on:
-      - eureka-server
+      api-gateway:
+        condition: service_healthy
 
   transaction-service:
     image: tymurmustafaiev/transaction-service:latest
@@ -33,7 +47,8 @@ services:
     networks:
       - my-network
     depends_on:
-      - eureka-server
+      api-gateway:
+        condition: service_healthy
 
   wallet-service:
     image: tymurmustafaiev/wallet-service:latest
@@ -41,7 +56,8 @@ services:
     networks:
       - my-network
     depends_on:
-      - eureka-server
+      api-gateway:
+        condition: service_healthy
 
   crypto-price-service:
     image: tymurmustafaiev/crypto-price-service:latest
@@ -49,7 +65,8 @@ services:
     networks:
       - my-network
     depends_on:
-      - eureka-server
+      api-gateway:
+        condition: service_healthy
 
   draw-chart-service:
     image: tymurmustafaiev/draw-chart-service:latest
@@ -57,7 +74,8 @@ services:
     networks:
       - my-network
     depends_on:
-      - eureka-server
+      api-gateway:
+        condition: service_healthy
 
   notification-service:
     image: tymurmustafaiev/notification-service:latest
@@ -65,7 +83,8 @@ services:
     networks:
       - my-network
     depends_on:
-      - eureka-server
+      api-gateway:
+        condition: service_healthy
 
   s3-storage-service:
     image: tymurmustafaiev/s3-storage-service:latest
@@ -73,7 +92,8 @@ services:
     networks:
       - my-network
     depends_on:
-      - eureka-server
+      api-gateway:
+        condition: service_healthy
 
 networks:
   my-network:
