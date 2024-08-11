@@ -105,7 +105,7 @@ services:
     environment:
       POSTGRES_DB: crypto_pair
       POSTGRES_USER: crypto-pair-db-user
-      POSTGRES_PASSWORD: business2024
+      POSTGRES_PASSWORD: exchanger2024
     networks:
       - my-network
 
@@ -116,7 +116,7 @@ services:
     environment:
       POSTGRES_DB: transaction
       POSTGRES_USER: transaction-db-user
-      POSTGRES_PASSWORD: business2024
+      POSTGRES_PASSWORD: exchanger2024
     networks:
       - my-network
 
@@ -127,7 +127,7 @@ services:
     environment:
       POSTGRES_DB: wallet
       POSTGRES_USER: wallet-db-user
-      POSTGRES_PASSWORD: business2024
+      POSTGRES_PASSWORD: exchanger2024
     networks:
       - my-network
 
