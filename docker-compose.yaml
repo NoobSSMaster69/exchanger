@@ -102,6 +102,8 @@ services:
     image: postgres:latest
     container_name: crypto-pair-db
     hostname: crypto-pair-db
+    ports:
+      - ":5432"
     environment:
       POSTGRES_DB: crypto_pair
       POSTGRES_USER: crypto-pair-db-user
@@ -113,6 +115,8 @@ services:
     image: postgres:latest
     container_name: transaction-db
     hostname: transaction-db
+    ports:
+      - ":5432"
     environment:
       POSTGRES_DB: transaction
       POSTGRES_USER: transaction-db-user
@@ -124,6 +128,8 @@ services:
     image: postgres:latest
     container_name: wallet-db
     hostname: wallet-db
+    ports:
+      - ":5432"
     environment:
       POSTGRES_DB: wallet
       POSTGRES_USER: wallet-db-user
