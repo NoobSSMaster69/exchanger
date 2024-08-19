@@ -127,34 +127,28 @@ services:
     image: postgres:latest
     container_name: crypto-pair-db
     hostname: crypto-pair-db
-    ports:
-      - "5433:5432"  # Host port changed to 5433
     environment:
       POSTGRES_DB: crypto_pair
       POSTGRES_USER: crypto-pair-db-user
       POSTGRES_PASSWORD: exchanger2024
     networks:
       - my-network
-
+  
   transaction-db:
     image: postgres:latest
     container_name: transaction-db
     hostname: transaction-db
-    ports:
-      - "5434:5432"  # Host port changed to 5434
     environment:
       POSTGRES_DB: transaction
       POSTGRES_USER: transaction-db-user
       POSTGRES_PASSWORD: exchanger2024
     networks:
       - my-network
-
+  
   wallet-db:
     image: postgres:latest
     container_name: wallet-db
     hostname: wallet-db
-    ports:
-      - "5435:5432"  # Host port changed to 5435
     environment:
       POSTGRES_DB: wallet
       POSTGRES_USER: wallet-db-user
