@@ -33,10 +33,11 @@ services:
       - api-gateway
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
-      interval: 30s
-      timeout: 10s
+      interval: 60s  # Увеличьте интервал между проверками
+      timeout: 15s   # Увеличьте таймаут ожидания ответа
       retries: 5
-      start_period: 40s
+      start_period: 60s
+
 
   transaction-service:
     image: tymurmustafaiev/transaction-service:latest
@@ -71,11 +72,12 @@ services:
     depends_on:
       - api-gateway
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
-      interval: 30s
-      timeout: 10s
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 60s  # Увеличьте интервал между проверками
+      timeout: 15s   # Увеличьте таймаут ожидания ответа
       retries: 5
-      start_period: 40s
+      start_period: 60s
+
 
   draw-chart-service:
     image: tymurmustafaiev/draw-chart-service:latest
@@ -117,11 +119,12 @@ services:
     depends_on:
       - api-gateway
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8087/actuator/health"]
-      interval: 30s
-      timeout: 10s
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 60s  # Увеличьте интервал между проверками
+      timeout: 15s   # Увеличьте таймаут ожидания ответа
       retries: 5
-      start_period: 40s
+      start_period: 60s
+
 
   crypto-pair-db:
     image: postgres:latest
