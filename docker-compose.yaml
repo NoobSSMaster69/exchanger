@@ -26,18 +26,24 @@ services:
     container_name: crypto-pair-service
     hostname: crypto-pair-service
     ports:
-      - ":8081"
+      - "8081:8081"
     networks:
       - my-network
     depends_on:
       - api-gateway
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   transaction-service:
     image: tymurmustafaiev/transaction-service:latest
     container_name: transaction-service
     hostname: transaction-service
     ports:
-      - ":8082"
+      - "8082:8082"
     networks:
       - my-network
     depends_on:
@@ -48,7 +54,7 @@ services:
     container_name: wallet-service
     hostname: wallet-service
     ports:
-      - ":8083"
+      - "8083:8083"
     networks:
       - my-network
     depends_on:
@@ -59,29 +65,42 @@ services:
     container_name: crypto-price-service
     hostname: crypto-price-service
     ports:
-      - ":8084"
+      - "8084:8084"
     networks:
       - my-network
     depends_on:
       - api-gateway
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   draw-chart-service:
     image: tymurmustafaiev/draw-chart-service:latest
     container_name: draw-chart-service
     hostname: draw-chart-service
     ports:
-      - ":8085"
+      - "8085:8085"
     networks:
       - my-network
     depends_on:
-      - api-gateway
+      crypto-price-service:
+        condition: service_healthy
+      crypto-pair-service:
+        condition: service_healthy
+      s3-storage-service:
+        condition: service_healthy
+      crypto-pair-db:
+        condition: service_started
 
   notification-service:
     image: tymurmustafaiev/notification-service:latest
     container_name: notification-service
     hostname: notification-service
     ports:
-      - ":8086"
+      - "8086:8086"
     networks:
       - my-network
     depends_on:
@@ -92,18 +111,24 @@ services:
     container_name: s3-storage-service
     hostname: s3-storage-service
     ports:
-      - ":8087"
+      - "8087:8087"
     networks:
       - my-network
     depends_on:
       - api-gateway
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8087/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   crypto-pair-db:
     image: postgres:latest
     container_name: crypto-pair-db
     hostname: crypto-pair-db
     ports:
-      - ":5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: crypto_pair
       POSTGRES_USER: crypto-pair-db-user
@@ -116,7 +141,7 @@ services:
     container_name: transaction-db
     hostname: transaction-db
     ports:
-      - ":5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: transaction
       POSTGRES_USER: transaction-db-user
@@ -129,7 +154,7 @@ services:
     container_name: wallet-db
     hostname: wallet-db
     ports:
-      - ":5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: wallet
       POSTGRES_USER: wallet-db-user
