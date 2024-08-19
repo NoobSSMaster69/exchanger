@@ -128,7 +128,7 @@ services:
     container_name: crypto-pair-db
     hostname: crypto-pair-db
     ports:
-      - "5432:5432"
+      - "5433:5432"  # Host port changed to 5433
     environment:
       POSTGRES_DB: crypto_pair
       POSTGRES_USER: crypto-pair-db-user
@@ -141,7 +141,7 @@ services:
     container_name: transaction-db
     hostname: transaction-db
     ports:
-      - "5432:5432"
+      - "5434:5432"  # Host port changed to 5434
     environment:
       POSTGRES_DB: transaction
       POSTGRES_USER: transaction-db-user
@@ -154,7 +154,7 @@ services:
     container_name: wallet-db
     hostname: wallet-db
     ports:
-      - "5432:5432"
+      - "5435:5432"  # Host port changed to 5435
     environment:
       POSTGRES_DB: wallet
       POSTGRES_USER: wallet-db-user
