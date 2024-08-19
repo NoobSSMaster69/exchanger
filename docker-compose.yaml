@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   eureka-server:
@@ -32,12 +32,11 @@ services:
     depends_on:
       - api-gateway
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
-      interval: 60s  # Увеличьте интервал между проверками
-      timeout: 15s   # Увеличьте таймаут ожидания ответа
+      test: ["CMD-SHELL", "wget --spider -q http://crypto-pair-service:8081/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
       retries: 5
-      start_period: 60s
-
+      start_period: 40s
 
   transaction-service:
     image: tymurmustafaiev/transaction-service:latest
@@ -72,12 +71,11 @@ services:
     depends_on:
       - api-gateway
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
-      interval: 60s  # Увеличьте интервал между проверками
-      timeout: 15s   # Увеличьте таймаут ожидания ответа
+      test: ["CMD-SHELL", "wget --spider -q http://crypto-price-service:8084/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
       retries: 5
-      start_period: 60s
-
+      start_period: 40s
 
   draw-chart-service:
     image: tymurmustafaiev/draw-chart-service:latest
@@ -88,14 +86,10 @@ services:
     networks:
       - my-network
     depends_on:
-      crypto-price-service:
-        condition: service_healthy
-      crypto-pair-service:
-        condition: service_healthy
-      s3-storage-service:
-        condition: service_healthy
-      crypto-pair-db:
-        condition: service_started
+      - crypto-price-service
+      - crypto-pair-service
+      - s3-storage-service
+      - crypto-pair-db
 
   notification-service:
     image: tymurmustafaiev/notification-service:latest
@@ -119,39 +113,44 @@ services:
     depends_on:
       - api-gateway
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
-      interval: 60s  # Увеличьте интервал между проверками
-      timeout: 15s   # Увеличьте таймаут ожидания ответа
+      test: ["CMD-SHELL", "wget --spider -q http://s3-storage-service:8087/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
       retries: 5
-      start_period: 60s
-
+      start_period: 40s
 
   crypto-pair-db:
     image: postgres:latest
     container_name: crypto-pair-db
     hostname: crypto-pair-db
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_DB: crypto_pair
       POSTGRES_USER: crypto-pair-db-user
       POSTGRES_PASSWORD: exchanger2024
     networks:
       - my-network
-  
+
   transaction-db:
     image: postgres:latest
     container_name: transaction-db
     hostname: transaction-db
+    ports:
+      - "5433:5432"
     environment:
       POSTGRES_DB: transaction
       POSTGRES_USER: transaction-db-user
       POSTGRES_PASSWORD: exchanger2024
     networks:
       - my-network
-  
+
   wallet-db:
     image: postgres:latest
     container_name: wallet-db
     hostname: wallet-db
+    ports:
+      - "5434:5432"
     environment:
       POSTGRES_DB: wallet
       POSTGRES_USER: wallet-db-user
