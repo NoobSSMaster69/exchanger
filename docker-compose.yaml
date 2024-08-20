@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   eureka-server:
@@ -86,14 +86,9 @@ services:
     networks:
       - my-network
     depends_on:
-      crypto-price-service:
-        condition: service_healthy
-      crypto-pair-service:
-        condition: service_healthy
-      s3-storage-service:
-        condition: service_healthy
-      crypto-pair-db:
-        condition: service_started
+      - crypto-price-service
+      - crypto-pair-service
+      - s3-storage-service
 
   notification-service:
     image: tymurmustafaiev/notification-service:latest
